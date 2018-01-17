@@ -1,24 +1,27 @@
 package com.hpe.view;
 
+/*
+ * 账户登录，注册，维护，修改密码
+ */
 public class AccountView {
 
     public void mainView() {
 
         System.out.println("------个人生活助手平台------" + "\n");
-        System.out.println(".....1,登录....." + "\n");
-        System.out.println(".....2,注册....." + "\n");
-        System.out.println(".....0,退出....." + "\n");
+        System.out.println("*****1.登录*****" + "\n");
+        System.out.println("*****2.注册*****" + "\n");
+        System.out.println("*****0.退出*****" + "\n");
     }
 
-    public void loginInView() {
+    public void signUserNameView() {
 
         System.out.println("------个人生活助手平台------" + "\n");
         System.out.println("请输入用户名：");
-        System.out.println("请输入密码：");
+        
     }
 
     public void signPassword() {
-
+        System.out.println("请输入密码：");
     }
 
     public void loginInSuccessView() {
