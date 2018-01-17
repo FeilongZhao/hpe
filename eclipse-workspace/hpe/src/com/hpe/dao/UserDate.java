@@ -44,6 +44,7 @@ public class UserDate implements UserImpl {
             return false;
         } finally {
             try {
+                rs.close();
                 preparedStatement.close();
                 connection.close();
             } catch (SQLException e) {
@@ -123,6 +124,7 @@ public class UserDate implements UserImpl {
             return false;
         } finally {
             try {
+                rs.close();
                 preparedStatement.close();
                 connection.close();
             } catch (SQLException e) {
