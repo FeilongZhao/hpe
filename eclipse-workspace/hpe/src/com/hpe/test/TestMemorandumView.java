@@ -11,7 +11,7 @@ public class TestMemorandumView {
     @Test
     public void main() {
         MemorandumView mView = new MemorandumView();
-        mView.updateMemorandumView();
+        mView.deleteMemorandumView();
     }
 
 }

@@ -37,5 +37,14 @@ public class MemorandumView {
         System.out.println("请输入标题：");
         System.out.println("请输入内容：");
     }
+    
+    public void deleteMemorandumView() {
+        
+        System.out.println("------我的备忘录------" + "\n");
+        System.out.println("********" + "删除备忘录" + "********");
+        System.out.println("1.编号" + " " + "2.标题" + " " + "3.时间" + " " + "4.内容" + " " );
+        System.out.println("请输入要删除的备忘录编号：");
+        
+    }
 
 }

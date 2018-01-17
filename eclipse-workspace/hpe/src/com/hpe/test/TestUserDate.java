@@ -54,7 +54,7 @@ public class TestUserDate {
     
     @Test
     public void testSaveLoginTime() {
-        UserDate userDate = new UserDate();
+        //UserDate userDate = new UserDate();
        // System.out.println(userDate.saveLoginTime("小明"));
     }
     
