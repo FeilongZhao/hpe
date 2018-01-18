@@ -55,6 +55,8 @@ public class MemorandumDate implements MemorandumImpl {
             }
 
         }
+        
+       
 
         return true;
 
@@ -96,6 +98,7 @@ public class MemorandumDate implements MemorandumImpl {
 
             }
         }
+        System.out.println("删除成功！");
         return true;
     }
 
@@ -128,7 +131,8 @@ public class MemorandumDate implements MemorandumImpl {
             }
 
         }
-        return false;
+        System.out.println("更新成功！");
+        return true;
     }
 
     // 查看所有

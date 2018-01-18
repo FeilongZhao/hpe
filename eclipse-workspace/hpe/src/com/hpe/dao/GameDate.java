@@ -46,7 +46,7 @@ public class GameDate implements GameImpl {
                 e.printStackTrace();
             }
         }
-        return false;
+        return true;
     }
 
     //排名查询

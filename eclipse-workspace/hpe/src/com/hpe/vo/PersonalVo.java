@@ -7,6 +7,7 @@ import com.hpe.service.LoginInService;
 import com.hpe.service.MaintenanceService;
 import com.hpe.service.UpdatePasswordService;
 import com.hpe.view.AccountView;
+import com.hpe.view.MemorandumView;
 
 public class PersonalVo {
 
@@ -20,6 +21,8 @@ public class PersonalVo {
     private UpdatePasswordService updatePasswordService = null;
     private WallentVo wallentVo = null;
     private MainVo mainVo = null;
+    private MemorandumVo memorandumVo = null;
+    private GameVo gameVo = null;
 
     public void main(int i) {
 
@@ -36,10 +39,10 @@ public class PersonalVo {
             wallent();
             break;
         case 4:
-            
+            memorandum();
             break;
         case 5:
-            
+            game();
             break;
         case 0:
             
@@ -47,6 +50,9 @@ public class PersonalVo {
             mainVo.main();
             break;
         default:
+            System.out.println("输入错误，请重新输入");
+            loginInVo = new LoginInVo();
+            loginInVo.personalMain(new LoginInService(), new PersonalVo(), UserDate.USERNAME, new AccountView());
             break;
         }
 
@@ -85,5 +91,20 @@ public class PersonalVo {
         wallentVo = new WallentVo();
         wallentVo.main();
     }
+    
+    private void memorandum() {
+        
+        memorandumVo = new MemorandumVo();
+        memorandumVo.main();
+     
+    }
+    
+    private void game() {
+        
+        gameVo = new GameVo();
+        gameVo.main();
+    }
+    
+   
 
 }
