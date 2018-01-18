@@ -5,12 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 import com.hpe.impl.AccountImpl;
 import com.hpe.po.Account;
 import com.hpe.util.DBHelper;
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
 
 /*
  * 主要定义余额查询、存钱、转账、账户验证、当月的收入、当月的支出方法；
@@ -28,8 +28,8 @@ public class AccountDate implements AccountImpl {
         Connection connection = null;
         ResultSet rs = null;
         try {
-            connection = (Connection) DBHelper.getConnection();
-            preparedStatement = (PreparedStatement) connection.prepareStatement(SQL);
+            connection = DBHelper.getConnection();
+            preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, userId);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {

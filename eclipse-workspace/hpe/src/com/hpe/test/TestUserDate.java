@@ -49,13 +49,21 @@ public class TestUserDate {
     @Test
     public void testRevisePassword() {
         UserDate userDate = new UserDate();
-        System.out.println(userDate.revisePassword("456","123",3));
+        System.out.println(userDate.revisePassword("456","123"));
     }
     
     @Test
     public void testSaveLoginTime() {
         //UserDate userDate = new UserDate();
        // System.out.println(userDate.saveLoginTime("小明"));
+    }
+    
+    @Test
+    public void testLoginTime() {
+        
+        UserDate userDate = new UserDate();
+        System.out.println( userDate.loginTime("小明"));
+       
     }
     
 }

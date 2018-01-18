@@ -9,6 +9,7 @@ public class MainVo {
     private AccountView accountView = new AccountView();
     private LoginInVo loginInVo = new LoginInVo();
     private Scanner scanner = new Scanner(System.in);
+    private RegisterVo registerVo = new RegisterVo();
 
     // 主菜单
     public void main() {
@@ -26,12 +27,15 @@ public class MainVo {
             break;
 
         case 2:
-
+            registerVo.main();
             break;
-        case 3:
-
+        case 0:
+            System.out.println("成功退出！");
+            System.exit(0);
+           
             break;
         default:
+            System.err.println("输入出错，请重新输入");
 
         }
     }

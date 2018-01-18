@@ -17,13 +17,16 @@ import com.mysql.jdbc.Statement;
  * 主要定义用户登录、用户注册、验证用户是否存在、用户信息维护（更新用户信息）、更改用户密码等方法
  */
 public class UserDate implements UserImpl {
+    
+    public static int userId = 0;
+    public static String USERNAME = null;
 
     // 登录
     @Override
     public boolean userLogin(String userName, String password) {
         // TODO Auto-generated method stub
 
-        final String SQL = "select username,userpassword from users where username = ? and userpassword = ?";
+        final String SQL = "select username,userpassword,userid from users where username = ? and userpassword = ?";
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
@@ -37,6 +40,8 @@ public class UserDate implements UserImpl {
             while (rs.next()) {
                 user.setUserName(rs.getString("username"));
                 user.setPassword(rs.getString("userpassword"));
+                USERNAME = user.getUserName();
+                userId = rs.getInt("userid");
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -57,48 +62,49 @@ public class UserDate implements UserImpl {
 
             return false;
         }
-        if (!saveLoginTime(userName)) {
-            System.out.println("登录时间记录出错！");
-        }
-
-        // System.out.println(userName + password);
         return true;
     }
 
     // 注册
     @Override
     public boolean userRegister(Users user) {
+        
+        if (!checkUser(user.getUserName())) {
 
-        final String SQL = "insert into users (username,userpassword,realname,tel,address,login_time)values(?,?,?,?,?,?)";
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            final String SQL = "insert into users (username,userpassword,realname,tel,address,login_time)values(?,?,?,?,?,?)";
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        try {
-            connection = DBHelper.getConnection();
-            preparedStatement = (PreparedStatement) connection.prepareStatement(SQL);
-            preparedStatement.setString(1, user.getUserName());
-            preparedStatement.setString(2, user.getUserPassword());
-            preparedStatement.setString(3, user.getRealName());
-            preparedStatement.setString(4, user.getTel());
-            preparedStatement.setString(5, user.getAddress());
-            preparedStatement.setString(6, sdf.format(user.getLogin_time()));
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return false;
-        } finally {
             try {
-                preparedStatement.close();
-                connection.close();
+                connection = DBHelper.getConnection();
+                preparedStatement = (PreparedStatement) connection.prepareStatement(SQL);
+                preparedStatement.setString(1, user.getUserName());
+                preparedStatement.setString(2, user.getUserPassword());
+                preparedStatement.setString(3, user.getRealName());
+                preparedStatement.setString(4, user.getTel());
+                preparedStatement.setString(5, user.getAddress());
+                preparedStatement.setString(6, sdf.format(user.getLogin_time()));
+                preparedStatement.executeUpdate();
+
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+                return false;
+            } finally {
+                try {
+                    preparedStatement.close();
+                    connection.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
+            return true;
         }
-        return true;
+        
+        System.err.println("注册用户名已经存在！请重新注册");
+        return false;
     }
 
     // 验证用户存在
@@ -137,6 +143,7 @@ public class UserDate implements UserImpl {
 
             return false;
         }
+      
         return true;
     }
 
@@ -154,7 +161,7 @@ public class UserDate implements UserImpl {
             preparedStatement.setString(2, user.getTel());
             preparedStatement.setString(3, user.getAddress());
             preparedStatement.setString(4, user.getUserName());
-            preparedStatement.setInt(5, user.getUserId());
+            preparedStatement.setInt(5, userId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -169,12 +176,13 @@ public class UserDate implements UserImpl {
                 e.printStackTrace();
             }
         }
+        System.err.println("信息更新成功！");
         return true;
     }
 
     // 修改密码
     @Override
-    public boolean revisePassword(String newPassword, String oldPassword,int userId) {
+    public boolean revisePassword(String newPassword, String oldPassword) {
 
         final String SQL = "update users set userpassword = ? where userpassword = ? and userid = ?";
         PreparedStatement preparedStatement = null;
@@ -205,6 +213,7 @@ public class UserDate implements UserImpl {
         return true;
     }
 
+    //保存登录时间
     private Boolean saveLoginTime(String userName) {
 
         final String SQL = "update users set login_time = ? where username = ?";
@@ -236,6 +245,42 @@ public class UserDate implements UserImpl {
         }
 
         return true;
+    }
+    //查询登陆时间
+    
+    public String loginTime(String userName) {
+        
+        final String SQL = "select login_time from users where username = ?";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        String time = null;
+        try {
+            connection = DBHelper.getConnection();
+            preparedStatement = (PreparedStatement) connection.prepareStatement(SQL);
+            preparedStatement.setString(1, userName);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                time = rs.getString("login_time");
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                preparedStatement.close();
+                connection.close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+        }
+        if (!saveLoginTime(userName)) {
+            System.err.println("登录时间记录出错！");
+        }
+        return time;   
     }
 
 }

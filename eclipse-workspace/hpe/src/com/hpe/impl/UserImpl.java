@@ -12,5 +12,5 @@ public interface UserImpl {
 
     Boolean maintenanceUserDate(Users user);// 维护用户数据
 
-    boolean revisePassword(String newPassword, String oldPassword,int userId);// 修改密码
+    boolean revisePassword(String newPassword, String oldPassword);// 修改密码
 }
