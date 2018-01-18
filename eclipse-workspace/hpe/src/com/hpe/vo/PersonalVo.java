@@ -16,8 +16,10 @@ public class PersonalVo {
     private LoginInVo loginInVo = null;
     private LoginInService loginInService = null;
     private PersonalVo personalVo = null;
-    private Map<String,String> password = null;
+    private Map<String, String> password = null;
     private UpdatePasswordService updatePasswordService = null;
+    private WallentVo wallentVo = null;
+    private MainVo mainVo = null;
 
     public void main(int i) {
 
@@ -30,12 +32,19 @@ public class PersonalVo {
             updatePassword();
             break;
         case 3:
+
+            wallent();
             break;
         case 4:
+            
             break;
         case 5:
+            
             break;
         case 0:
+            
+            mainVo = new MainVo();
+            mainVo.main();
             break;
         default:
             break;
@@ -50,26 +59,31 @@ public class PersonalVo {
         service.main(accountView.maintenanceView());
         personalVo = new PersonalVo();
         loginInVo = new LoginInVo();
-        
+
         System.out.println(UserDate.USERNAME);
-        
+
         loginInVo.personalMain(loginInService, personalVo, UserDate.USERNAME, accountView);
-        
+
     }
-    
-    
+
     private void updatePassword() {
-        
+
         accountView = new AccountView();
         updatePasswordService = new UpdatePasswordService();
         password = accountView.updatePasswordView();
         loginInVo = new LoginInVo();
         loginInService = new LoginInService();
         personalVo = new PersonalVo();
-        
+
         updatePasswordService.main(password.get("newPassword"), password.get("oldPassword"));
-        
+
         loginInVo.personalMain(loginInService, personalVo, UserDate.USERNAME, accountView);
+    }
+
+    private void wallent() {
+
+        wallentVo = new WallentVo();
+        wallentVo.main();
     }
 
 }

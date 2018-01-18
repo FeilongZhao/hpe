@@ -1,5 +1,6 @@
 package com.hpe.dao;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -17,9 +18,10 @@ import com.mysql.jdbc.Statement;
  * 主要定义用户登录、用户注册、验证用户是否存在、用户信息维护（更新用户信息）、更改用户密码等方法
  */
 public class UserDate implements UserImpl {
-    
+
     public static int userId = 0;
     public static String USERNAME = null;
+    private LoginUser user = null;
 
     // 登录
     @Override
@@ -30,7 +32,8 @@ public class UserDate implements UserImpl {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
-        LoginUser user = new LoginUser();
+        user = new LoginUser();
+
         try {
             connection = DBHelper.getConnection();
             preparedStatement = (PreparedStatement) connection.prepareStatement(SQL);
@@ -58,6 +61,8 @@ public class UserDate implements UserImpl {
             }
 
         }
+       // System.err.println(user.getUserName());
+       // System.err.println(user.getPassword());
         if (user.getUserName() == null) {
 
             return false;
@@ -68,10 +73,11 @@ public class UserDate implements UserImpl {
     // 注册
     @Override
     public boolean userRegister(Users user) {
-        
+
         if (!checkUser(user.getUserName())) {
 
             final String SQL = "insert into users (username,userpassword,realname,tel,address,login_time)values(?,?,?,?,?,?)";
+
             Connection connection = null;
             PreparedStatement preparedStatement = null;
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -100,11 +106,77 @@ public class UserDate implements UserImpl {
                     e.printStackTrace();
                 }
             }
+            registerAccount(user.getUserName());
             return true;
         }
-        
+
         System.err.println("注册用户名已经存在！请重新注册");
         return false;
+    }
+
+    private Boolean registerAccount(String userName) {
+
+        //查询id
+        final String SQL = "select userid from users where username = ?";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        int userId = 0;
+        try {
+            connection = DBHelper.getConnection();
+            preparedStatement = (PreparedStatement) connection.prepareStatement(SQL);
+            preparedStatement.setString(1, userName);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                userId = rs.getInt("userid");
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                rs.close();
+                preparedStatement.close();
+                connection.close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+               
+                e.printStackTrace(); 
+                return false;
+            }
+
+        }
+
+        if (userId == 0) {
+
+            System.err.println("注册出错!");
+            return false;
+
+        } else {
+            try {
+                //注册账户
+                final String SQL1 = "insert into account(account_money,userid)values(?,?)";
+                connection = DBHelper.getConnection();
+                preparedStatement = (PreparedStatement) connection.prepareStatement(SQL1);
+                preparedStatement.setBigDecimal(1, new BigDecimal("0"));
+                preparedStatement.setInt(2, userId);
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }finally {
+                try {
+                    preparedStatement.close();
+                    connection.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     // 验证用户存在
@@ -143,7 +215,7 @@ public class UserDate implements UserImpl {
 
             return false;
         }
-      
+
         return true;
     }
 
@@ -213,7 +285,7 @@ public class UserDate implements UserImpl {
         return true;
     }
 
-    //保存登录时间
+    // 保存登录时间
     private Boolean saveLoginTime(String userName) {
 
         final String SQL = "update users set login_time = ? where username = ?";
@@ -246,10 +318,10 @@ public class UserDate implements UserImpl {
 
         return true;
     }
-    //查询登陆时间
-    
+    // 查询登陆时间
+
     public String loginTime(String userName) {
-        
+
         final String SQL = "select login_time from users where username = ?";
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -280,7 +352,7 @@ public class UserDate implements UserImpl {
         if (!saveLoginTime(userName)) {
             System.err.println("登录时间记录出错！");
         }
-        return time;   
+        return time;
     }
 
 }

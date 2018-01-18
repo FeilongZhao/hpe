@@ -70,7 +70,8 @@ public class AccountDate implements AccountImpl {
             connection = DBHelper.getConnection();
             preparedStatement = (PreparedStatement) connection.prepareStatement(SQL);
             preparedStatement.setBigDecimal(1, money);
-            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, userId);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -109,14 +110,14 @@ public class AccountDate implements AccountImpl {
                     preparedStatement.setBigDecimal(1, money);
                     preparedStatement.setInt(2, accountId);
                     preparedStatement.executeUpdate();
-                    saveAccountLog(accountId, getAccountId(myId), "转出", money);
+                    saveAccountLog(accountId, getAccountId(myId), "转入", money);
 
                     // 减
                     preparedStatement = (PreparedStatement) connection.prepareStatement(SQL2);
                     preparedStatement.setBigDecimal(1, money);
                     preparedStatement.setInt(2, getAccountId(myId));
                     preparedStatement.executeUpdate();
-                    saveAccountLog(getAccountId(myId), accountId, "转入", money);
+                    saveAccountLog(getAccountId(myId), accountId, "转出", money);
 
                 } catch (SQLException e) {
                     System.out.println("输入不合法!");

@@ -10,7 +10,7 @@ public class TestWalletView {
     public void testMain() {
         
         WalletView wl = new WalletView();
-        wl.countView();
+       // wl.countView();
     }
 
 }

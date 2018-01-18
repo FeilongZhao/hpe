@@ -10,6 +10,7 @@ public class Ranking {
     
     private int rankingId;
     private int userId;
+    private String userName;
     private int integral;
     private Date time;
     public int getRankingId() {
@@ -36,12 +37,18 @@ public class Ranking {
     public void setTime(Date time) {
         this.time = time;
     }
+    
+    public String getUserName() {
+        return userName;
+    }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
     @Override
     public String toString() {
-        return "Ranking [rankingId=" + rankingId + ", userId=" + userId + ", integral=" + integral + ", time=" + time
-                + "]";
+        return "Ranking [rankingId=" + rankingId + ", userId=" + userId + ", userName=" + userName + ", integral="
+                + integral + ", time=" + time + "]";
     }
+  
     
-    
-
 }
