@@ -35,7 +35,12 @@ public class WalletView {
         scanner = new Scanner(System.in);
         System.out.println("********存钱********");
         System.out.println("请输入存款金额：");
-        money = scanner.nextBigDecimal().toString();
+        money = scanner.nextLine();
+        while(!check(money)) {
+            System.out.println("输入错误，请重新输入");
+            System.out.println("请输入存款金额：");
+            money = scanner.nextLine();
+        }
         System.out.println("您的账户成功存入：" + money);
        
         
@@ -46,13 +51,25 @@ public class WalletView {
         
         scanner = new Scanner(System.in);
         ransfer = new HashMap<>();
+        String acconut = null;
+        String money = null;
       //  scanner.nextLine();
         System.out.println("********存钱********");
         System.out.println("请输入对方账户：");
-        ransfer.put("帐号",scanner.nextLine() );
+        acconut = scanner.nextLine();
+        while(!check(acconut)) {
+            System.out.println("输入错误，请重新输入！");
+            acconut = scanner.nextLine();
+        }
+        ransfer.put("帐号",acconut );
         System.out.println("请输入转账金额：");
-        ransfer.put("金额", scanner.nextLine());
-        System.out.println("您的账户成功转出：" +ransfer.get("金额") +"元");
+        money = scanner.nextLine();
+        while (!check(money)) {
+            System.out.println("输入错误，请重新输入！");
+            money = scanner.nextLine();
+        }
+        ransfer.put("金额", money);
+        System.out.println("您的账户转出的金额是：" +ransfer.get("金额") +"元");
         
         return ransfer;
     }
@@ -68,6 +85,12 @@ public class WalletView {
         wallentVo = new WallentVo();
         wallentVo.main();
         //mainView();
+    }
+
+    public Boolean check(String date) {
+
+        String regex = "-?[0-9]+.?[0-9]+";
+        return date.matches(regex);
     }
 
 }

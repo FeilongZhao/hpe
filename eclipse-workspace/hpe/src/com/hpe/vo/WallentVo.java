@@ -2,6 +2,7 @@ package com.hpe.vo;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import com.hpe.dao.UserDate;
 import com.hpe.po.Account;
@@ -21,7 +22,6 @@ public class WallentVo {
     private LoginInService loginInService = null;
     private PersonalVo personalVo = null;
     private AccountView accountView = null;
-   
 
     private int i = 0;
 
@@ -70,7 +70,7 @@ public class WallentVo {
     private void savaMoneyView() {
         String money = null;
         wallentService = new WallentService();
-        money = walletView.savaMoneyView();
+        money = walletView.savaMoneyView();                              
         wallentService.savaMoney(new BigDecimal(money));
         walletView.view();
 
@@ -90,6 +90,5 @@ public class WallentVo {
         countMoney = wallentService.count();
         walletView.countView(countMoney);
         walletView.view();
-    }
-
+    } 
 }

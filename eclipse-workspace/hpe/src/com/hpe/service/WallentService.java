@@ -25,7 +25,7 @@ public class WallentService {
         accountDate = new AccountDate();
         
         accountDate.saveMoney(UserDate.userId, money);
-        System.out.println(UserDate.userId);
+      //  System.out.println(UserDate.userId);
     }
     public void  ransferMoney(Map  ransfer) {
         
